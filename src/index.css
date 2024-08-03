@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:100,400,300,600,700');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+}
+
+#root {
+    height: 100%;
+}
+
+body {
+    min-height: 900px;
+}
+
+body * {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 100;
+}
+
+:root {
+    --background-color-light: rgba(235, 245, 251, 0.53);
+    --background-color-dark: rgba(0, 0, 0, 0.7);
+}
