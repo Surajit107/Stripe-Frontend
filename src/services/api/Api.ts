@@ -1,16 +1,20 @@
 import axios, { AxiosResponse } from "axios";
-import { REACT_APP_BASE_URL } from "../../config/App.config";
+import { REACT_APP_BASE_URL, ngrokBrowserHeaders } from "../../config/App.config";
 import { authInInputValues, UserDataResponse } from "../../types/auth";
 import { CustomHeadersType, NetworkResppne } from "../../types/common";
-import { PaymentSuccessParams } from "../../types/subscription";
-import { Subscription } from "react-redux";
+import { PaymentSuccessParams, Subscription } from "../../types/subscription";
 
-export const API = axios.create({ baseURL: REACT_APP_BASE_URL });
+export const API = axios.create({
+  baseURL: REACT_APP_BASE_URL,
+  headers: { ...ngrokBrowserHeaders },
+});
 
 // Login
 export const LOGIN = (data: authInInputValues): Promise<AxiosResponse<NetworkResppne<UserDataResponse>>> => API.post("/api/v1/auth/login", data);
 // Signup
 export const SIGNUP = (data: authInInputValues): Promise<AxiosResponse<NetworkResppne<UserDataResponse>>> => API.post("/api/v1/auth/signup", data);
+// Get user details
+export const GETUSERDETAILS = (header: CustomHeadersType): Promise<AxiosResponse<NetworkResppne<UserDataResponse>>> => API.get("/user/api/v1/get-user-details", header);
 // Get subscription plans
 export const GETSUBSPLANS = (header: CustomHeadersType): Promise<AxiosResponse<NetworkResppne<Array<Subscription>>>> => API.get("/user/api/v1/get-subscription-plans", header);
 // Payment suceess

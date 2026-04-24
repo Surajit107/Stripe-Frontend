@@ -21,7 +21,7 @@ export const getSubsPlans = createAsyncThunk("/user/api/get-subscription-plans",
 // paymentSuccess thunk
 export const paymentSuccess = createAsyncThunk("/user/api/v1/payment-success", async ({ _sessionID, header }: PaymentSuccessParams, { rejectWithValue }): Promise<any> => {
     try {
-        const response = await PAYMENTSUCCESS({ _sessionID }, header);
+        const response = await PAYMENTSUCCESS({ _sessionID, header });
         const result: any = response?.data;
         if (result?.success) {
             const user = EncryptData(result?.data);

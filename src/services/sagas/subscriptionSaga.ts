@@ -16,7 +16,7 @@ import { ActionType, CustomHeadersType, NetworkResppne } from '../../types/commo
 import { PaymentSuccessParams } from '../../types/subscription';
 import { UserDataResponse } from '../../types/auth';
 import { AxiosResponse } from 'axios';
-import { Subscription } from 'react-redux';
+import { Subscription } from '../../types/subscription';
 import { showToast } from '../../helper/Toast';
 
 
