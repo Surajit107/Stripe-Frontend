@@ -1,20 +1,16 @@
-import createSagaMiddleware from 'redux-saga';
 import { configureStore } from "@reduxjs/toolkit";
-import AuthSlice from "../reducers/AuthSlice";
-import SubscriptionSlice from "../reducers/SubscriptionSlice";
-import rootSaga from '../sagas/root/rootSaga';
+import type { AnyAction } from "redux";
+import type { ThunkDispatch } from "redux-thunk";
+import AuthSlice from "../slices/AuthSlice";
+import SubscriptionSlice from "../slices/SubscriptionSlice";
 
-const sagaMiddleware = createSagaMiddleware();
-const middleware = [sagaMiddleware];
-
-const Store = configureStore({
+export const Store = configureStore({
     reducer: {
         authSlice: AuthSlice,
         subscriptionSlice: SubscriptionSlice,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(middleware),
+    middleware: (getDefaultMiddleware: any) => getDefaultMiddleware({ serializableCheck: false })
 });
 
-sagaMiddleware.run(rootSaga);
-
-export default Store;
+export type RootState = ReturnType<typeof Store.getState>;
+export type AppDispatch = ThunkDispatch<RootState, undefined, AnyAction>;

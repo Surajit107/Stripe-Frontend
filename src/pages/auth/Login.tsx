@@ -1,14 +1,15 @@
-import { useState } from 'react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Container, Grid, Box, TextField, Button, Typography, IconButton, InputAdornment, Link as MuiLink } from '@mui/material';
+import React, { useState } from 'react';
+import { Google, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Container, Grid, Box, TextField, Button, Typography, Divider, IconButton, InputAdornment } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../services/slices/AuthSlice';
 import { loginValidationSchema } from '../../helper/FormValidation';
 import LoaderSpinner from '../../util/LoaderSpinner';
-import { loginRequest } from '../../services/reducers/AuthSlice';
-import { useTheme } from '../../services/ThemeContext';
+import BrandLogo from '../../components/common/BrandLogo';
+import { stripeTheme } from '../../theme/stripeTheme';
 
 const Login = (): JSX.Element => {
     const { auth_loading } = useSelector((state: any) => state.authSlice);
@@ -16,7 +17,6 @@ const Login = (): JSX.Element => {
 
     const dispatch: Dispatch<any> = useDispatch();
     const navigate: any = useNavigate();
-    const { theme } = useTheme();
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, resetForm } = useFormik({
         initialValues: {
@@ -25,7 +25,7 @@ const Login = (): JSX.Element => {
         },
         validationSchema: loginValidationSchema,
         onSubmit: (values) => {
-            dispatch(loginRequest({ data: values, navigate, resetForm }));
+            dispatch(loginUser({ data: values, navigate, resetForm }));
         }
     });
 
@@ -33,109 +33,120 @@ const Login = (): JSX.Element => {
         setShowPassword(!showPassword);
     };
 
-    const textColor = theme === 'light' ? '#000' : '#fff';
-    const inputBorderColor = theme === 'light' ? '#ccc' : '#555';
-    const labelColor = theme === 'light' ? '#000' : '#fff';
-    const eyeIconColor = theme === 'light' ? '#000' : '#fff';
-    const linkColor = theme === 'light' ? '#673de6' : '#f00';
-
     return (
         <>
-            <Box style={{ height: '100vh', backgroundColor: (theme === 'light' ? "#fff" : "#333") }}>
-                <LoaderSpinner loading={auth_loading} />
+            {/* Loader */}
+            <LoaderSpinner
+                loading={auth_loading}
+            />
 
-                <Container maxWidth="lg" style={{ height: '100vh' }}>
-                    <Grid container justifyContent="center" alignItems="center" style={{ height: '100%' }}>
-                        <Grid item md={6} lg={6} sx={{ display: { xs: 'none', md: 'block' }, marginRight: 10 }}>
-                            <img
-                                src="/assets/img/login-img.jpg"
-                                alt="AI Illustration"
-                                style={{ width: '100%', borderRadius: 20 }}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6} lg={5}>
-                            <Box component="div">
-                                <Box mt={2} component="form" onSubmit={handleSubmit}>
-                                    <TextField
-                                        variant="outlined"
-                                        margin="normal"
-                                        fullWidth
-                                        id="credential"
-                                        label="Email Address"
-                                        name="credential"
-                                        autoComplete="credential"
-                                        value={values.credential}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={touched.credential && Boolean(errors.credential)}
-                                        helperText={touched.credential && errors.credential}
-                                        InputLabelProps={{
-                                            sx: { color: labelColor }
-                                        }}
-                                        InputProps={{
-                                            sx: {
-                                                input: { color: textColor },
-                                                fieldset: { borderColor: inputBorderColor }
-                                            }
-                                        }}
-                                        placeholder="Enter your email"
-                                    />
-                                    <TextField
-                                        variant="outlined"
-                                        margin="normal"
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type={showPassword ? 'text' : 'password'}
-                                        id="password"
-                                        autoComplete="current-password"
-                                        value={values.password}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={touched.password && Boolean(errors.password)}
-                                        helperText={touched.password && errors.password}
-                                        InputLabelProps={{
-                                            sx: { color: labelColor }
-                                        }}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        onClick={handleTogglePasswordVisibility}
-                                                        edge="end"
-                                                        sx={{ color: eyeIconColor }}
-                                                    >
-                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                            sx: {
-                                                input: { color: textColor },
-                                                fieldset: { borderColor: inputBorderColor }
-                                            }
-                                        }}
-                                        placeholder="Enter your password"
-                                    />
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        style={{ padding: '10px 20px', marginTop: '20px', backgroundColor: "#673de6" }}
-                                    >
-                                        Login
-                                    </Button>
-                                    <Typography variant="body2" align="center" mt={2} color={labelColor}>
-                                        Don't have an account?{' '}
-                                        <MuiLink component={Link} to="/signup" sx={{ color: linkColor }}>
-                                            Signup
-                                        </MuiLink>
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        </Grid>
+            <Container maxWidth="lg" style={{ height: '100vh' }}>
+                <Grid container justifyContent="center" alignItems="center" style={{ height: '100%' }}>
+                    <Grid item md={6} lg={6} marginRight={10}>
+                        <img
+                            src="/assets/img/flower.jpeg"
+                            alt="AI Illustration"
+                            style={{ width: '100%', borderRadius: 20 }}
+                        />
                     </Grid>
-                </Container>
-            </Box>
+                    <Grid item md={6} lg={5}>
+                        <Box component="div">
+                            <Box component="div" style={{ display: 'flex', justifyContent: 'center' }}>
+                                <Grid item md={6} lg={2}>
+                                    <Box
+                                        sx={{
+                                            width: '100%',
+                                            borderRadius: 1,
+                                            overflow: 'hidden',
+                                            background: `linear-gradient(180deg, ${stripeTheme.blurple} 0%, #5248d9 100%)`,
+                                        }}
+                                    >
+                                        <BrandLogo width="100%" height="100%" />
+                                    </Box>
+                                </Grid>
+                            </Box>
+
+                            <Typography variant="h5" component="p" m={2} textAlign={'center'}>
+                                Billing and subscription flow testing with Stripe
+                            </Typography>
+
+                            <Box mt={2} component="form" onSubmit={handleSubmit}>
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    id="credential"
+                                    label="Email Address"
+                                    name="credential"
+                                    autoComplete="credential"
+                                    value={values.credential}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={touched.credential && Boolean(errors.credential)}
+                                    helperText={touched.credential && errors.credential}
+                                />
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    autoComplete="current-password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={touched.password && Boolean(errors.password)}
+                                    helperText={touched.password && errors.password}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={handleTogglePasswordVisibility}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    style={{ padding: '10px 20px', marginTop: '20px' }}
+                                >Login
+                                </Button>
+                                <Typography variant="body2" align="center" mt={2}>
+                                    Don't have an account?{' '}
+                                    <Link to="/signup">
+                                        Signup
+                                    </Link>
+                                </Typography>
+                            </Box>
+
+                            <Divider>
+                                <Typography variant="subtitle1" mx={1}>
+                                    Or
+                                </Typography>
+                            </Divider>
+
+                            <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
+                                <Typography variant="h6" component="p" mr={2}>
+                                    Sign in with
+                                </Typography>
+                                <IconButton color="primary">
+                                    <Google />
+                                </IconButton>
+                            </Box>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Container>
         </>
     );
 };
